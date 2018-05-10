@@ -7,9 +7,30 @@ document.addEventListener("DOMContentLoaded", () =>  {
   let missed = 0;
 
   //Start game with addEventListener() on start game button
-  startGame.addEventListener("click", () => {
-      overlay.style.display = "none";
+  startGame.addEventListener("click", () => { 
 
+      const buttons = document.querySelectorAll("#qwerty button");
+      overlay.style.display = "none";
+    function resetBoard(){
+      let tries = document.querySelectorAll("#scoreboard li");
+      
+      let li = document.querySelectorAll(".letter");
+      for (let i = 0; i < tries.length; i++) {
+        
+        tries[i].style.display = "inline-block";
+      } 
+
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("chosen");
+        buttons[i].disabled = false;
+      }
+
+      for (var i = 0; i <  li.length; i++) {
+         li[i].remove();
+      }
+      return letterFound = false;
+    }
+      
       //Create phrases array
       const phrases = ["as you wish", "whats knitten kitten", "danger will robinson", 
                        "single serving friends", "si vis pacem para bellum"];
@@ -69,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
       }
       addPhraseToDisplay(splitPhrase);
       //Get qwerty children 
-      const buttons = document.querySelectorAll("#qwerty button");
+      
        
       
          
@@ -78,24 +99,39 @@ document.addEventListener("DOMContentLoaded", () =>  {
         buttons[i].addEventListener("click", function (event) {
           let playerLetter = this.innerHTML;
           this.classList.add("chosen");
+          this.disabled = true;
 
           
           
           function checkLetter(playerLetter){
             let li = document.querySelectorAll(".letter");
+             let tries = document.querySelectorAll("#scoreboard li");
+            let letterFound = false;
             for (let _i = 0; _i < li.length; _i++) {
               let phraseLetter = li[_i].innerHTML;
               if (phraseLetter === playerLetter) {
-
+                 letterFound = true;
                  li[_i].classList.add("show");
-              }else if(phraseLetter != playerLetter){
-                missed = missed + 1;
-                console.log(missed);
               }
-              
             }
             
-
+            if (letterFound == false) {
+                
+                tries[missed].style.display = "none";
+                console.log(tries[missed]);
+                missed++;
+                
+              } 
+              if(missed >= 5){
+                let message = document.querySelector("#overlay h2");
+                let btn = document.querySelector("#overlay .btn__reset");
+                let btntxt = btn.innerHTML = "Retry?";
+                let lossMess = message.innerHTML = "Oh no! You ran out of tries!";
+                overlay.style.display = "block";
+                overlay.classList.add("lose");
+                resetBoard();
+              }
+              letterFound = false;
           }
           checkLetter(playerLetter);
          });  
