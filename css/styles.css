@@ -13,7 +13,7 @@
   --color-keys-light: #E5E5E5;
   --font-size-large: 60px;
   --font-size-medium: 20px;
-  --transition: all .2s ease-in-out;
+  --transition: all 1s ease-in-out;
 }
 
 /* main */
@@ -78,6 +78,7 @@ button {
 /* Scoreboard */
 
 .tries {
+  max-height:66px;
   background-image: url('../images/liveHeart.png');
 }
 

@@ -1,23 +1,24 @@
 document.addEventListener("DOMContentLoaded", () =>  {
-  //Global variables
   const startGame = document.querySelector(".btn__reset");
+  //Start game with addEventListener() on start game button
+  startGame.addEventListener("click", () => { 
+      //Global variables
+  
   const overlay = document.getElementById("overlay");
   const phrase = document.getElementById("phrase");
   const qwerty = document.getElementById("qwerty");
   let missed = 0;
-
-  //Start game with addEventListener() on start game button
-  startGame.addEventListener("click", () => { 
-
-      const buttons = document.querySelectorAll("#qwerty button");
-      overlay.style.display = "none";
+  const buttons = document.querySelectorAll("#qwerty button");
+  overlay.style.display = "none";
+      
+      
     function resetBoard(){
-      let tries = document.querySelectorAll("#scoreboard li");
+      let tries = document.querySelectorAll("#scoreboard li img");
       
       let li = document.querySelectorAll(".letter");
       for (let i = 0; i < tries.length; i++) {
         
-        tries[i].style.display = "inline-block";
+        tries[i].src = "images/liveHeart.png";
       } 
 
       for (let i = 0; i < buttons.length; i++) {
@@ -92,20 +93,9 @@ document.addEventListener("DOMContentLoaded", () =>  {
       //Get qwerty children 
       
        
-      
-         
- 
-      for (let i = 0; i < buttons.length; i += 1) {
-        buttons[i].addEventListener("click", function (event) {
-          let playerLetter = this.innerHTML;
-          this.classList.add("chosen");
-          this.disabled = true;
-
-          
-          
-          function checkLetter(playerLetter){
+      function checkLetter(playerLetter){
             let li = document.querySelectorAll(".letter");
-             let tries = document.querySelectorAll("#scoreboard li");
+             
             let letterFound = false;
             for (let _i = 0; _i < li.length; _i++) {
               let phraseLetter = li[_i].innerHTML;
@@ -115,26 +105,35 @@ document.addEventListener("DOMContentLoaded", () =>  {
               }
             }
             
-            if (letterFound == false) {
-                
-                tries[missed].style.display = "none";
-                console.log(tries[missed]);
-                missed++;
-                
+              if (letterFound == false) {
+                  const tries = document.querySelectorAll("#scoreboard li img");
+                  tries[missed].src = "images/lostHeart.png";
+                  console.log(missed);
+                  missed++;
+                  
               } 
+              
               if(missed >= 5){
                 let message = document.querySelector("#overlay h2");
                 let btn = document.querySelector("#overlay .btn__reset");
-                let btntxt = btn.innerHTML = "Retry?";
+                let btntxt = btn.innerHTML = "Retry";
                 let lossMess = message.innerHTML = "Oh no! You ran out of tries!";
                 overlay.style.display = "block";
                 overlay.classList.add("lose");
                 resetBoard();
               }
-              letterFound = false;
+              
           }
+         
+ 
+      for (let i = 0; i < buttons.length; i += 1) {
+        buttons[i].addEventListener("click", function (event) {
+          let playerLetter = this.innerHTML;
+          this.classList.add("chosen");
+          this.disabled = true;
+
           checkLetter(playerLetter);
-         });  
+          });  
       }
   }); 
 });
