@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
       
     function resetBoard(){
       let tries = document.querySelectorAll("#scoreboard li img");
-      
+      missed = 0;
       let li = document.querySelectorAll(".letter");
       for (let i = 0; i < tries.length; i++) {
         
