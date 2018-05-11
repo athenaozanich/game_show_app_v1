@@ -1,18 +1,23 @@
 document.addEventListener("DOMContentLoaded", () =>  {
   const startGame = document.querySelector(".btn__reset");
   //Start game with addEventListener() on start game button
+  
   startGame.addEventListener("click", () => { 
       //Global variables
   
-  const overlay = document.getElementById("overlay");
-  const phrase = document.getElementById("phrase");
-  const qwerty = document.getElementById("qwerty");
-  let missed = 0;
-  const buttons = document.querySelectorAll("#qwerty button");
-  overlay.style.display = "none";
+    const overlay = document.getElementById("overlay");
+    const phrase = document.getElementById("phrase");
+    const qwerty = document.getElementById("qwerty");
+    let missed = 0;
+    const buttons = document.querySelectorAll("#qwerty button");
+    overlay.style.display = "none";
       
+      //Create phrases array
+      const phrases = ["as you wish", "whats knitten kitten", "danger will robinson", 
+                       "single serving friends", "si vis pacem para bellum"];
+     
+     function resetBoard(){
       
-    function resetBoard(){
       let tries = document.querySelectorAll("#scoreboard li img");
       missed = 0;
       let li = document.querySelectorAll(".letter");
@@ -31,11 +36,6 @@ document.addEventListener("DOMContentLoaded", () =>  {
       }
       return letterFound = false;
     }
-      
-      //Create phrases array
-      const phrases = ["as you wish", "whats knitten kitten", "danger will robinson", 
-                       "single serving friends", "si vis pacem para bellum"];
-     
      //Get phrase function 
      function getRandomPhrase(phrases){
        //Dynamic random based on the number of phrases in the array
@@ -135,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
           checkLetter(playerLetter);
           });  
       }
+
   }); 
 });
 
