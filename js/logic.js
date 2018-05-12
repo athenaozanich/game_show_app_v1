@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
   const buttons = document.querySelectorAll("#qwerty button");
 
   //Tracking variables
-  let displayScore = document.querySelectorAll("#banner #winScore") ;
+  let displayScore = document.querySelectorAll("#banner #score") ;
   let letterFound = false;
   let win = false;
   let losses = 0;
@@ -24,7 +24,8 @@ document.addEventListener("DOMContentLoaded", () =>  {
     //Select "tries" imgs  
     let tries = document.querySelectorAll("#scoreboard li img");
     //Select phrase display letters
-    let li = document.querySelectorAll(".letter");
+    let li = document.querySelectorAll("#phrase li");
+    let br = document.querySelectorAll("#phrase br");
     //Reset misssed variable
     missed = 0;
     //On win true
@@ -32,11 +33,12 @@ document.addEventListener("DOMContentLoaded", () =>  {
       //Add a point to score
       wins++;
       //Display score
-      displayScore[0].innerHTML = "Wins:"+wins+"";
+      displayScore[0].innerHTML = "Wins: "+wins;
       //On win false
     }else if (score == false){
       //Add a loss to score
       losses++;
+      displayScore[1].innerHTML = "Losses: "+losses;
     }
     //Loop through tries
     for (let i = 0; i < tries.length; i++) {
@@ -47,6 +49,10 @@ document.addEventListener("DOMContentLoaded", () =>  {
     for (var i = 0; i <  li.length; i++) {
       //Reset phrase letters
       li[i].remove();
+    }
+    for (var i = 0; i <  br.length; i++) {
+      //Reset phrase letters
+      br[i].remove();
     }
   }
 
@@ -79,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () =>  {
         phrase.children[0].appendChild(li);
         //Style the li
         li.classList.add("letter");
-        phrase.children[0].lastChild.style.marginBottom = "10px";
         //Add letter to the li
         li.appendChild(phraseLetter);
         //Check for space
