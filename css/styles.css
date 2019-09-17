@@ -41,7 +41,7 @@ h2 {
   text-transform: uppercase;
   font-family: 'Open Sans', sans-serif;
   font-size: var(--font-size-large);
-  
+
 }
 h3{
   margin: 10px;
@@ -52,9 +52,7 @@ h3{
 }
 
 button {
-  margin: 6px;
-  border: 1px solid transparent;
-  padding: .5rem 1.25rem;
+  border: 1px solid black;
   color: var(--color-keys);
   font-size: var(--font-size-medium);
   background-color: var(--color-keys-light);
@@ -62,8 +60,8 @@ button {
   -webkit-transition: var(--transition);
   -o-transition: var(--transition);
   transition: var(--transition);
-  min-width: 55px;
-  min-height:55px;
+  min-width: 35px;
+  min-height:35px;
 }
 
 .main-container {
@@ -88,17 +86,18 @@ button {
 
 /* Scoreboard */
 
-.tries {
+.tries img{
+  width:35px;
 }
 
 /* Phrase */
 
 .letter {
   font-size: var(--font-size-medium);
-  height: 50px;
-  width: 50px;
-  padding: 10px 1px 0 1px;
-  margin-right: 2px;
+  height: 30px;
+  width: 30px;
+  /* padding: 10px 1px 0 1px; */
+  margin-right: 1px;
   margin-bottom: 10px;
   color: transparent;
   background: var(--color-neutral-light);
@@ -106,6 +105,7 @@ button {
   -webkit-transition: var(--transition);
   -o-transition: var(--transition);
   transition: var(--transition);
+  border: 1px solid black;
 }
 
 .space {
