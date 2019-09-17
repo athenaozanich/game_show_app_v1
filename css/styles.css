@@ -60,9 +60,9 @@ button {
   -webkit-transition: var(--transition);
   -o-transition: var(--transition);
   transition: var(--transition);
-  min-width: 35px;
-  min-height: 35px;
-  margin: 1px;
+  min-width: 30px;
+  min-height: 30px;
+  margin: 2px;
 }
 
 .main-container {
