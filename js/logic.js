@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () =>  {
 
-  //Global variables 
+  //Global variables
   const startGame = document.querySelector(".btn__reset");
   const overlay = document.getElementById("overlay");
   const phrase = document.getElementById("phrase");
@@ -13,19 +13,19 @@ document.addEventListener("DOMContentLoaded", () =>  {
   let win = false;
   let losses = 0;
   let wins = 0;
-  let missed = 0; 
+  let missed = 0;
 
   //Create phrases array
-  const phrases = ["as you wish", "whats knitten kitten", "danger will robinson", 
+  const phrases = ["as you wish", "whats knitten kitten", "danger will robinson",
          "single serving friends", "si vis pacem para bellum"];
 
   //Reset board
   function resetBoard(score){
-    //Select "tries" imgs  
+    //Select "tries" imgs
     let tries = document.querySelectorAll("#scoreboard li img");
     //Select phrase display letters
     let li = document.querySelectorAll("#phrase li");
-    let br = document.querySelectorAll("#phrase br");
+    let ul = document.querySelectorAll("#phrase ul");
     //Reset misssed variable
     missed = 0;
     //On win true
@@ -45,18 +45,18 @@ document.addEventListener("DOMContentLoaded", () =>  {
       //Reset tries
       tries[i].src = "images/liveHeart.png";
     }
-    //Loop through phrase letters 
+    //Loop through phrase letters
     for (var i = 0; i <  li.length; i++) {
       //Reset phrase letters
       li[i].remove();
     }
-    for (var i = 0; i <  br.length; i++) {
+    for (var i = 1; i <  ul.length; i++) {
       //Reset phrase letters
-      br[i].remove();
+      ul[i].remove();
     }
   }
 
-  //Get phrase function 
+  //Get phrase function
   function getRandomPhrase(phrases){
     //Dynamic random based on the number of phrases in the array
     let random = Math.floor(Math.random() * phrases.length);
@@ -79,29 +79,26 @@ document.addEventListener("DOMContentLoaded", () =>  {
       if (splitPhrase[i] != " ") {
         //Create li
         let li = document.createElement("LI");
-        //Create text containing current letter 
+        //Create text containing current letter
         let phraseLetter = document.createTextNode(splitPhrase[i]);
         //Add html to the dom
-        phrase.children[0].appendChild(li);
+        phrase.children[word].appendChild(li);
         //Style the li
         li.classList.add("letter");
         //Add letter to the li
         li.appendChild(phraseLetter);
         //Check for space
       }else if(splitPhrase[i] == " "){
+        //Create visual spacing
+        let li = document.createElement("LI");
+        phrase.children[word].appendChild(li);
+        li.classList.add("space");
+
+        let ul = document.createElement("UL");
+        phrase.appendChild(ul);
         //Count words
         word++;
-        //Create visual spacing 
-        let li = document.createElement("LI");
-        phrase.children[0].appendChild(li);
-        li.classList.add("space");
-        //Ensure no more than two words per line
-        if(word == 2 || word == 5){
-        //Linebreak after 2 and 4 words
-        let br = document.createElement("BR");
-        //Add linebreak to dom
-        phrase.children[0].appendChild(br);
-        }
+
       }
     }
   }
@@ -131,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
       tries[missed].src = "images/lostHeart.png";
       //Increase missed count
       missed++;
-    } 
+    }
     //return boolean for use in button call
     return letterFound;
   }
@@ -160,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
       //Send win state to reset
       resetBoard(win);
     //Test for all letters found
-    }else if (found.length === li.length) { 
+    }else if (found.length === li.length) {
       //Change button text
       let Btn = startGame.innerHTML = "Replay";
       //Change headline
@@ -199,8 +196,8 @@ document.addEventListener("DOMContentLoaded", () =>  {
         }
       //Call checkWinState function
       checkWinState();
-    });  
-  } 
+    });
+  }
   //Start game with addEventListener() on start game button
   startGame.addEventListener("click", () => {
     //Loop through buttons
@@ -216,5 +213,5 @@ document.addEventListener("DOMContentLoaded", () =>  {
     let splitPhrase = getRandomPhrase(phrases);
     //Call AddPhraseToDisplay function
     addPhraseToDisplay(splitPhrase);
-  }); 
+  });
 });
