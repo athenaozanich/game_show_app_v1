@@ -103,6 +103,7 @@ button {
   margin-bottom: 10px;
   color: transparent;
   background: var(--color-neutral-light);
+  /*opacity: 0;*/
   border-radius: 5px;
   -webkit-transition: var(--transition);
   -o-transition: var(--transition);
@@ -112,6 +113,32 @@ button {
 
 .space {
   width: 15px;
+}
+.animate-out {
+	animation: roll-out-right 1s ease-in-out 1s 1 both;
+}
+.animate-in {
+	animation: roll-in-left 1s ease-in-out 1s 1 both;
+}
+@keyframes roll-in-left {
+  0% {
+    transform: translateX(-100vw) rotate(-540deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes roll-out-right {
+  0% {
+    transform: translateX(0px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100vw) rotate(540deg);
+    opacity: 0;
+  }
 }
 
 .show {
@@ -167,7 +194,7 @@ button {
 }
 
 .start a {
-  color: var(--color-win);
+  color: var(--color-start);
 }
 
 .win {
@@ -175,7 +202,7 @@ button {
 }
 
 .win a {
-  color: var(--color-win);
+  color: var(--color-start);
 }
 
 .lose {

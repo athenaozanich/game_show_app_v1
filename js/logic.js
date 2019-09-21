@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
   //Tracking variables
   let displayScore = document.querySelectorAll("#banner #score") ;
   let letterFound = false;
+  let letters;
   let win = false;
   let losses = 0;
   let wins = 0;
@@ -85,9 +86,11 @@ document.addEventListener("DOMContentLoaded", () =>  {
         phrase.children[word].appendChild(li);
         //Style the li
         li.classList.add("letter");
+        li.style.opacity = "0";
         //Add letter to the li
         li.appendChild(phraseLetter);
         //Check for space
+
       }else if(splitPhrase[i] == " "){
         //Create visual spacing
         let li = document.createElement("LI");
@@ -100,24 +103,27 @@ document.addEventListener("DOMContentLoaded", () =>  {
         word++;
 
       }
+
     }
+    letters = document.querySelectorAll(".letter");
+    rollOut(letters.length,"animate-in");
   }
   //Check player letter against phrase letter
   function checkLetter(playerLetter){
     //Select phrase li.letter
-    let li = document.querySelectorAll(".letter");
+    letter = document.querySelectorAll(".letter");
     //Initialize letter found boolean
     let letterFound = false;
     //Loop through phrase li.letters
-    for (let _i = 0; _i < li.length; _i++) {
+    for (let _i = 0; _i < letter.length; _i++) {
       //Get li.letter text
-      let phraseLetter = li[_i].innerHTML;
+      let phraseLetter = letter[_i].innerHTML;
       //Test if player letter is in phrase
       if (phraseLetter === playerLetter) {
         //If equal set boolean to true
         letterFound = true;
         //Add class show
-        li[_i].classList.add("show");
+        letter[_i].classList.add("show");
       }
     }
     //Test if player letter is in phrase
@@ -132,46 +138,77 @@ document.addEventListener("DOMContentLoaded", () =>  {
     //return boolean for use in button call
     return letterFound;
   }
+
+  function rollOut (i,direction) {
+    setTimeout(function () {
+
+      if (i >= 0) {
+        i--;
+        letter = document.querySelectorAll(".letter");
+        if (document.querySelectorAll(`.animate-in`)) {
+          if (direction === "animate-out") {
+            letter[i].className = letter[i].className.replace( /(?:^|\s)animate-in(?!\S)/g , ' animate-out' );
+          }
+        }
+        document.querySelectorAll(".letter")[i].classList.add(direction);
+      }
+      if (i > 0) {
+        rollOut(i,direction);
+      }
+    }, 100);
+
+
+  }
+
   //Check for win or loss
   function checkWinState(){
     //Select headline element
     let message = document.querySelector("#overlay h2");
     //Select phrase letter
-    let li = document.querySelectorAll(".letter");
+    letter = document.querySelectorAll(".letter");
+
     //Select shown letters
     let found = document.querySelectorAll(".letter.show");
     //Test for 5 incorrect guesses
     if(missed === 5){
-      //Change button text
-      let Btn = startGame.innerHTML = "Retry";
-      //Change headline
-      let Mess = message.innerHTML = "Oh no! You ran out of tries!";
-      //Add overlay
-      overlay.style.display = "flex";
-      //Remove win class if present
-      overlay.classList.remove("win");
-      //Add lose class
-      overlay.classList.add("lose");
-      //Set win boolean
-      win = false;
-      //Send win state to reset
-      resetBoard(win);
+
+      setTimeout(function() {
+        //Change button text
+        let Btn = startGame.innerHTML = "Retry";
+        //Change headline
+        let Mess = message.innerHTML = "Oh no! You ran out of tries!";
+        //Add overlay
+        overlay.style.display = "flex";
+        //Remove win class if present
+        overlay.classList.remove("win");
+        //Add lose class
+        overlay.classList.add("lose");
+        //Set win boolean
+        win = false;
+        //Send win state to reset
+        resetBoard(win);
+      }, 2000);
+      rollOut(letter.length,"animate-out");
     //Test for all letters found
-    }else if (found.length === li.length) {
-      //Change button text
-      let Btn = startGame.innerHTML = "Replay";
-      //Change headline
-      let Mess = message.innerHTML = "Great Job!";
-      //Add overlay
-      overlay.style.display = "flex";
-      //Remove win class if present
-      overlay.classList.remove("lose");
-      //Add win class
-      overlay.classList.add("win");
-      //Set win boolean
-      win = true;
-       //Send win state to reset
-      resetBoard(win);
+  }else if (found.length === letter.length) {
+
+      setTimeout(function() {
+        //Change button text
+        let Btn = startGame.innerHTML = "Replay";
+        //Change headline
+        let Mess = message.innerHTML = "Great Job!";
+        //Add overlay
+        overlay.style.display = "flex";
+        //Remove win class if present
+        overlay.classList.remove("lose");
+        //Add win class
+        overlay.classList.add("win");
+        //Set win boolean
+        win = true;
+         //Send win state to reset
+        resetBoard(win);
+      }, 2000);
+      rollOut(letter.length,"animate-out");
     }
   }
 
@@ -212,6 +249,8 @@ document.addEventListener("DOMContentLoaded", () =>  {
     //Call getRandomPhrase function and save it's return value to splitPhrase
     let splitPhrase = getRandomPhrase(phrases);
     //Call AddPhraseToDisplay function
-    addPhraseToDisplay(splitPhrase);
+      addPhraseToDisplay(splitPhrase);
+
+
   });
 });
