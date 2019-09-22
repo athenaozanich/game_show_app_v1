@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
       (i >= 0 && li[i]) ? li[i].remove() : null;
       (i > 0 && ul[i]) ? ul[i].remove() : null;
     }
-    overlay.style.display = "none";
+
   }
 
   addPhraseToDisplay = () => {//Pass in the splitPhrase
@@ -50,17 +50,10 @@ document.addEventListener("DOMContentLoaded", () =>  {
     let word = 0;
 
     for (let i = 0; i < splitPhrase.length; i++) {//Loop through letters in phrase
-      if (splitPhrase[i] != " ") {//Ensure letter isn't a space
-        let li = phrase.children[word].appendChild(document.createElement("LI"));//Add html to the most recent "word" container
-        li.appendChild(document.createTextNode(splitPhrase[i]));//Add letter to the li
-        li.classList.add("letter");//Style the li
-
-      }else if(splitPhrase[i] == " "){//Check for space
-        let li = phrase.children[word].appendChild(document.createElement("LI"));//Create visual spacing
-        li.classList.add("space");
-        phrase.appendChild(document.createElement("UL"));
-        word++;//Count words
-      }
+      li = phrase.children[word].appendChild(document.createElement("LI"));
+      (splitPhrase[i] != " ") ? (li.appendChild(document.createTextNode(splitPhrase[i])), li.classList.add("letter"))//Style the li
+      :(splitPhrase[i] == " ")? (li.classList.add("space"), phrase.appendChild(document.createElement("UL")), word++)
+      :null;//Count words
     }
     letters = document.querySelectorAll(".letter");//Update global variable for new letters
   }
@@ -118,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
   });
 
   startGame.addEventListener("click", () => {//Start game with addEventListener() on start game button
-
+    overlay.style.display = "none";
     mainGameLoop();//Call AddPhraseToDisplay() function pass value of splitPhrase from getRandomPhrase()
   });
 });
