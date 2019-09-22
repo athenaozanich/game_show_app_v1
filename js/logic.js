@@ -6,251 +6,119 @@ document.addEventListener("DOMContentLoaded", () =>  {
   const phrase = document.getElementById("phrase");
   const qwerty = document.getElementById("qwerty");
   const buttons = document.querySelectorAll("#qwerty button");
+  //Create phrases array
+  const phrases = ["as you wish"//, "whats knitten kitten", "danger will robinson",
+         //"single serving friends", "si vis pacem para bellum"
+       ];
 
   //Tracking variables
   let displayScore = document.querySelectorAll("#banner #score") ;
+  let tries = document.querySelectorAll("#scoreboard li img");
   let letterFound = false;
   let letters;
-  let win = false;
   let losses = 0;
   let wins = 0;
   let missed = 0;
 
-  //Create phrases array
-  const phrases = ["as you wish", "whats knitten kitten", "danger will robinson",
-         "single serving friends", "si vis pacem para bellum"];
 
-  //Reset board
-  function resetBoard(score){
-    //Select "tries" imgs
-    let tries = document.querySelectorAll("#scoreboard li img");
-    //Select phrase display letters
-    let li = document.querySelectorAll("#phrase li");
+
+  //Main Game loop
+  mainGameLoop = () => {
+    clearBoard();
+    addPhraseToDisplay();
+    rollOut(letters.length, "animate-in");//Call for animation
+  }
+
+  clearBoard = () =>{
+    let li = document.querySelectorAll("#phrase li");//Select phrase display letters
     let ul = document.querySelectorAll("#phrase ul");
-    //Reset misssed variable
-    missed = 0;
-    //On win true
-    if (score == true) {
-      //Add a point to score
-      wins++;
-      //Display score
-      displayScore[0].innerHTML = "Wins: "+wins;
-      //On win false
-    }else if (score == false){
-      //Add a loss to score
-      losses++;
-      displayScore[1].innerHTML = "Losses: "+losses;
+    missed = 0;//Reset misssed variable
+    loopCap = (li.length >= buttons.length) ? (loopCap =  li.length) : (loopCap =  buttons.length);//Set max loop
+
+    for (let i = 0; i < loopCap; i++) {//Reset board
+      (i >= 0 && tries[i]) ? tries[i].src = "images/liveHeart.png" : null;
+      (i >= 0 && buttons[i]) ? (buttons[i].style.backgroundColor = "#D2D2D2",buttons[i].disabled = false) : null;
+      (i >= 0 && li[i]) ? li[i].remove() : null;
+      (i > 0 && ul[i]) ? ul[i].remove() : null;
     }
-    //Loop through tries
-    for (let i = 0; i < tries.length; i++) {
-      //Reset tries
-      tries[i].src = "images/liveHeart.png";
-    }
-    //Loop through phrase letters
-    for (var i = 0; i <  li.length; i++) {
-      //Reset phrase letters
-      li[i].remove();
-    }
-    for (var i = 1; i <  ul.length; i++) {
-      //Reset phrase letters
-      ul[i].remove();
-    }
+    overlay.style.display = "none";
   }
 
-  //Get phrase function
-  function getRandomPhrase(phrases){
-    //Dynamic random based on the number of phrases in the array
-    let random = Math.floor(Math.random() * phrases.length);
-    //Use random to select a phrase
-    let randomPhrase = phrases[random];
-    //Split that phrase into an array of letters
-    let splitPhrase = randomPhrase.split("");
-    //Return result
-    return splitPhrase;
-  }
-
-
-
-  //Add to display
-  function addPhraseToDisplay(splitPhrase){
-    //Loop through letters in phrase
+  addPhraseToDisplay = () => {//Pass in the splitPhrase
+    let random = Math.floor(Math.random() * phrases.length);//Dynamic random based on the number of phrases in the array
+    let splitPhrase = phrases[random].split("");//Split and return phrase array
     let word = 0;
-    for (let i = 0; i < splitPhrase.length; i++) {
-      //Ensure letter isn't a space
-      if (splitPhrase[i] != " ") {
-        //Create li
-        let li = document.createElement("LI");
-        //Create text containing current letter
-        let phraseLetter = document.createTextNode(splitPhrase[i]);
-        //Add html to the dom
-        phrase.children[word].appendChild(li);
-        //Style the li
-        li.classList.add("letter");
-        li.style.opacity = "0";
-        //Add letter to the li
-        li.appendChild(phraseLetter);
-        //Check for space
 
-      }else if(splitPhrase[i] == " "){
-        //Create visual spacing
-        let li = document.createElement("LI");
-        phrase.children[word].appendChild(li);
+    for (let i = 0; i < splitPhrase.length; i++) {//Loop through letters in phrase
+      if (splitPhrase[i] != " ") {//Ensure letter isn't a space
+        let li = phrase.children[word].appendChild(document.createElement("LI"));//Add html to the most recent "word" container
+        li.appendChild(document.createTextNode(splitPhrase[i]));//Add letter to the li
+        li.classList.add("letter");//Style the li
+
+      }else if(splitPhrase[i] == " "){//Check for space
+        let li = phrase.children[word].appendChild(document.createElement("LI"));//Create visual spacing
         li.classList.add("space");
-
-        let ul = document.createElement("UL");
-        phrase.appendChild(ul);
-        //Count words
-        word++;
-
-      }
-
-    }
-    letters = document.querySelectorAll(".letter");
-    rollOut(letters.length,"animate-in");
-  }
-  //Check player letter against phrase letter
-  function checkLetter(playerLetter){
-    //Select phrase li.letter
-    letter = document.querySelectorAll(".letter");
-    //Initialize letter found boolean
-    let letterFound = false;
-    //Loop through phrase li.letters
-    for (let _i = 0; _i < letter.length; _i++) {
-      //Get li.letter text
-      let phraseLetter = letter[_i].innerHTML;
-      //Test if player letter is in phrase
-      if (phraseLetter === playerLetter) {
-        //If equal set boolean to true
-        letterFound = true;
-        //Add class show
-        letter[_i].classList.add("show");
+        phrase.appendChild(document.createElement("UL"));
+        word++;//Count words
       }
     }
-    //Test if player letter is in phrase
-    if (letterFound == false) {
-      //If not equal select tries
-      let tries = document.querySelectorAll("#scoreboard li img");
-      //Temove try
-      tries[missed].src = "images/lostHeart.png";
-      //Increase missed count
-      missed++;
-    }
-    //return boolean for use in button call
-    return letterFound;
+    letters = document.querySelectorAll(".letter");//Update global variable for new letters
   }
 
-  function rollOut (i,direction) {
-    setTimeout(function () {
-
-      if (i >= 0) {
-        i--;
-        letter = document.querySelectorAll(".letter");
-        if (document.querySelectorAll(`.animate-in`)) {
-          if (direction === "animate-out") {
-            letter[i].className = letter[i].className.replace( /(?:^|\s)animate-in(?!\S)/g , ' animate-out' );
-          }
-        }
-        document.querySelectorAll(".letter")[i].classList.add(direction);
-      }
-      if (i > 0) {
-        rollOut(i,direction);
-      }
+  rollOut = (i,direction,elmnt) => {
+    setTimeout(function () {//set .10s timeout between each execution of a loop
+      (i < 0) ? null //if thruthy do nothing
+        :(i--, document.querySelectorAll(`.animate-in`) && direction === "animate-out") ?//if falsey decrement and run conditional
+          letters[i].className = letters[i].className.replace( /(?:^|\s)animate-in(?!\S)/g , ' animate-out' )//if truthy swap classes
+          : letters[i].classList.add(direction);//if falsey simply add the class
+      (i > 0) ? rollOut(i,direction) : null;//If `i` is greater than `0` call rollOut() again passing in current values
     }, 100);
-
-
   }
 
-  //Check for win or loss
-  function checkWinState(){
-    //Select headline element
-    let message = document.querySelector("#overlay h2");
-    //Select phrase letter
-    letter = document.querySelectorAll(".letter");
-
-    //Select shown letters
-    let found = document.querySelectorAll(".letter.show");
-    //Test for 5 incorrect guesses
-    if(missed === 5){
-
-      setTimeout(function() {
-        //Change button text
-        let Btn = startGame.innerHTML = "Retry";
-        //Change headline
-        let Mess = message.innerHTML = "Oh no! You ran out of tries!";
-        //Add overlay
-        overlay.style.display = "flex";
-        //Remove win class if present
-        overlay.classList.remove("win");
-        //Add lose class
-        overlay.classList.add("lose");
-        //Set win boolean
-        win = false;
-        //Send win state to reset
-        resetBoard(win);
-      }, 2000);
-      rollOut(letter.length,"animate-out");
-    //Test for all letters found
-  }else if (found.length === letter.length) {
-
-      setTimeout(function() {
-        //Change button text
-        let Btn = startGame.innerHTML = "Replay";
-        //Change headline
-        let Mess = message.innerHTML = "Great Job!";
-        //Add overlay
-        overlay.style.display = "flex";
-        //Remove win class if present
-        overlay.classList.remove("lose");
-        //Add win class
-        overlay.classList.add("win");
-        //Set win boolean
-        win = true;
-         //Send win state to reset
-        resetBoard(win);
-      }, 2000);
-      rollOut(letter.length,"animate-out");
+  checkLetter = (playerLetter) => {//Check player letter against phrase letter
+    letterFound = false;
+    for (let i = 0; i < letters.length; i++) {//Loop through phrase li.letters
+      (letters[i].innerHTML === playerLetter) ? (letterFound = true, letters[i].classList.add("show")) : false;//Is letter in phrase
     }
+    (letterFound == false) ? (tries[missed].src = "images/lostHeart.png", missed++) : null;//Test if player letter is in phrase
+    return letterFound;//return boolean for use in button call
   }
 
-  //Listen for button, then compare with phrase letters
-  for (let i = 0; i < buttons.length; i += 1) {
-    //Button Listener
-    buttons[i].addEventListener("click", function (event) {
-      //Selects the button pressed by player
-      let playerLetter = this.innerHTML;
-      //Call checkLetter function and save the return value to checkResult
-      let checkResult = checkLetter(playerLetter);
-      //Disable the button
-      this.disabled = true;
-        //Test checkResult for true
-        if (checkResult == true) {
-          //If true change button background to green
-          this.style.backgroundColor = "#78CF82";
-          //Test checkResult for false
-        }else if(checkResult == false){
-          //If true change button background to red
-          this.style.backgroundColor = "#D94545";
-        }
-      //Call checkWinState function
-      checkWinState();
-    });
+  checkWinState = () => {//Check for win or loss
+    let found = document.querySelectorAll(".letter.show");//Select shown letters
+    win = (found.length === letters.length) ? "won"//check for win/loss state
+    : (missed === 5) ? "lost"
+    : win = null;//if niether do nothing
+    (win == "won") ? (setMessage(win), wins++, displayScore[0].innerHTML = `${win}: `+wins)//update message for win/loss screen
+    : (win == "lost") ? (setMessage(win), losses++, displayScore[1].innerHTML = `${win}: `+losses)
+    : win = null;
   }
-  //Start game with addEventListener() on start game button
-  startGame.addEventListener("click", () => {
-    //Loop through buttons
-    for (let i = 0; i < buttons.length; i++) {
-      //Reset their background
-      buttons[i].style.backgroundColor = "#D2D2D2";
-      //Enable buttons
-      buttons[i].disabled = false;
+
+  setMessage = (wonLost) => { //Pass in wonLost value
+    let message = document.querySelector("#overlay h2"); //Select headline element
+    setTimeout(function() {
+      message.innerHTML = `You ${wonLost}, give it another go?`;//Change headline
+      overlay.style.display = "flex";//Add overlay
+      overlay.className = `${wonLost}`;//Add lose class
+      clearBoard();//Send win state to reset
+    }, 2000);
+
+    rollOut(letters.length,"animate-out");
+  }
+
+  qwerty.addEventListener("click", function (e) {//Listen for button, then compare with phrase letters using event delegation
+    if (e.target.type === "submit") {
+      let clickedBtn = e.target;
+      clickedBtn.disabled = true;//Disable the button
+      checkLetter(clickedBtn.innerHTML) ?//Test checkLetter and add repective bg color
+        clickedBtn.style.backgroundColor = "#78CF82"
+      : clickedBtn.style.backgroundColor = "#D94545";
+      checkWinState();//Call checkWinState function
     }
-    //Remove overlay
-    overlay.style.display    = "none";
-    //Call getRandomPhrase function and save it's return value to splitPhrase
-    let splitPhrase = getRandomPhrase(phrases);
-    //Call AddPhraseToDisplay function
-      addPhraseToDisplay(splitPhrase);
+  });
 
+  startGame.addEventListener("click", () => {//Start game with addEventListener() on start game button
 
+    mainGameLoop();//Call AddPhraseToDisplay() function pass value of splitPhrase from getRandomPhrase()
   });
 });
