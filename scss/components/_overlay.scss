@@ -1,0 +1,43 @@
+/* Overlay */
+
+#overlay {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  color: #FFFFFF;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 5px;
+  z-index: 10000;
+}
+
+.title {
+  color: #000;
+}
+
+.start {
+  background: linear-gradient(to bottom, #f4f5f6 0%, #8b8b8b 50%, #000000 100%);
+}
+
+.start a {
+  color: $color-start;
+}
+
+.won {
+  background: linear-gradient(to bottom, #f4f5f6 0%, #c4f1ce 50%, #18722b 100%);
+}
+
+.won a {
+  color: $color-start;
+}
+
+.lost {
+  background: linear-gradient(to bottom, #f4f5f6 0%, #e59393 50%, #4c0101 100%);
+}
+
+.lost a {
+  color: $color-lost;
+}

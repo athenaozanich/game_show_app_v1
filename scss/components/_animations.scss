@@ -1,0 +1,42 @@
+.animate-out {
+	animation: roll-out-right 1s ease-in-out 1s 1 both;
+}
+.animate-in {
+	animation: roll-in-left 1s ease-in-out 1s 1 both;
+}
+.slide-in-right {
+  animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes roll-in-left {
+  0% {
+    transform: translateX(-100vw) rotate(-540deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes roll-out-right {
+  0% {
+    transform: translateX(0px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100vw) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

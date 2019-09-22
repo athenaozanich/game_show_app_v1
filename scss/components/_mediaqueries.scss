@@ -1,0 +1,30 @@
+@media screen and (min-width: 768px) {
+  button{
+    min-width: 40px;
+    min-height: 40px;
+    margin: 3px;
+  }
+  .letter{
+    height: 40px;
+    width: 40px;
+    margin-right: 2px;
+  }
+  .tries img{
+    width:50px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  button{
+    min-width: 50px;
+    min-height: 50px;
+    margin: 3px;
+  }
+  .letter{
+    height: 50px;
+    width: 50px;
+  }
+  .tries img{
+    width:70px;
+  }
+}
+ 

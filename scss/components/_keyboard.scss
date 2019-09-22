@@ -1,0 +1,33 @@
+/* Keyboard */
+
+.keyrow {
+  display: flex;
+  justify-content: center;
+}
+
+button{
+  border: 1px solid black;
+  color: $color-keys;
+  font-size: $font-size-medium;
+  background-color: $color-keys-light;
+  border-radius: 5px;
+  min-width: 30px;
+  min-height: 30px;
+  margin: 2px;
+  box-shadow: 0px 5px 5px black;
+  &.wrong {
+    box-shadow: inset 0px 2px 2px black;
+    background-color: $color-lost;
+  }
+  &.correct{
+    box-shadow: inset 0px 2px 2px black;
+    background-color: $color-won;
+  }
+}
+.startBtn {
+  padding: 8px;
+  margin: 50px auto;
+  background: #FFFFFF;
+  border-radius: 5px;
+  font-size: $font-size-medium;
+}
