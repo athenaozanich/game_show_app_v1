@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
     overlay.style.display = "none";
   }
 
-  qwerty.addEventListener("click", function (e) {//Use event delegation listen for button, then compare with phrase letters
+  qwerty.addEventListener("click", (e) => {//Use event delegation listen for button, then compare with phrase letters
     if (e.target.type === "submit") {
       let clickedBtn = e.target;
       clickedBtn.disabled = true;//Disable the button
