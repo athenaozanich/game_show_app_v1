@@ -444,8 +444,11 @@ h3 {
 .animate-in {
   animation: roll-in-left 1s ease-in-out 1s 1 both; }
 
-.slide-in-right {
-  animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+.slide-in-left {
+  animation: slide-in-left 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both; }
+
+.slide-out-right {
+  animation: slide-out-right 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both; }
 
 @keyframes roll-in-left {
   0% {
@@ -461,13 +464,20 @@ h3 {
   100% {
     transform: translateX(100vw) rotate(540deg);
     opacity: 0; } }
-@keyframes slide-in-right {
+@keyframes slide-in-left {
   0% {
-    transform: translateX(1000px);
+    transform: translateX(-1000px);
     opacity: 0; }
   100% {
     transform: translateX(0);
     opacity: 1; } }
+@keyframes slide-out-right {
+  0% {
+    transform: translateX(0);
+    opacity: 1; }
+  100% {
+    transform: translateX(1000px);
+    opacity: 0; } }
 /* Overlay */
 #overlay {
   display: flex;

@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
     let message = document.querySelector("#overlay h2"); //Select headline element
     setTimeout(function() {
       message.innerHTML = `You ${wonLost}, give it another go?`;//Change headline
-      overlay.style.display = "flex";//Add overlay
-      overlay.className = `${wonLost}`;//Add lose class
+      overlay.className = `${wonLost} slide-in-left`;//Add lose class
       //Send win state to reset
     }, 2000);
   }
@@ -84,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
       (i >= 0 && li[i]) ? li[i].remove() : null;
       (i > 0 && ul[i]) ? ul[i].remove() : null;
     }
-    overlay.style.display = "none";
+    overlay.className = "start slide-out-right";
   }
 
   qwerty.addEventListener("click", (e) => {//Use event delegation listen for button, then compare with phrase letters
