@@ -18,10 +18,12 @@ button{
   &.wrong {
     box-shadow: inset 0px 2px 2px black;
     background-color: $color-lost;
+    transition: box-shadow ease-in-out 1s both;
   }
   &.correct{
     box-shadow: inset 0px 2px 2px black;
     background-color: $color-won;
+    transition: box-shadow ease-in-out 1s both;
   }
 }
 .startBtn {

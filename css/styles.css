@@ -530,10 +530,12 @@ button {
   box-shadow: 0px 5px 5px black; }
   button.wrong {
     box-shadow: inset 0px 2px 2px black;
-    background-color: #D94545; }
+    background-color: #D94545;
+    transition: box-shadow ease-in-out 1s both; }
   button.correct {
     box-shadow: inset 0px 2px 2px black;
-    background-color: #78CF82; }
+    background-color: #78CF82;
+    transition: box-shadow ease-in-out 1s both; }
 
 .startBtn {
   padding: 8px;
