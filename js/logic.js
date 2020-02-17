@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
   let losses = 0;
   let wins = 0;
   let missed = 0;
-
+  let win = null;
   addPhraseToDisplay = () => {//Pass in the splitPhrase
     let random = Math.floor(Math.random() * phrases.length);//Dynamic random based on the number of phrases in the array
     let splitPhrase = phrases[random].split("");//Split and return phrase array
@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
 
     for (let i = 0; i < splitPhrase.length; i++) {//Loop through letters in phrase
       li = phrase.children[word].appendChild(document.createElement("LI"));
+      
       (splitPhrase[i] != " ") ? (li.appendChild(document.createTextNode(splitPhrase[i])), li.classList.add("letter"))//Style the li
       :(splitPhrase[i] == " ")? (li.classList.add("space"), phrase.appendChild(document.createElement("UL")), word++)
       :null;//Count words
@@ -45,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () =>  {
   }
 
   checkWinState = () => {//Check for win or loss
-    let found = document.querySelectorAll(".letter.show");//Select shown letters
+    let found = document.querySelectorAll(".show");//Select shown letters
     win = (found.length === letters.length) ? "won" : (missed === 5) ? "lost" : win = null;//if niether do nothing
     (win == "won") ? (setMessage(win), wins++, displayScore[0].innerHTML = `${win}: `+wins, rollOut(letters.length, "animate-out"))//update message for win/loss screen
     : (win == "lost") ? (setMessage(win), losses++, displayScore[1].innerHTML = `${win}: `+losses, rollOut(letters.length, "animate-out"))
@@ -61,8 +62,8 @@ document.addEventListener("DOMContentLoaded", () =>  {
     }, 2000);
   }
 
-  rollOut = (i,direction,elmnt) => {//Handle animations with delay (hoping to replace this with a sass function instead)
-    setTimeout(function () {//set .10s timeout between each execution of a loop
+  rollOut = (i,direction) => {//Handle animations with delay (hoping to replace this with a sass function instead)
+    setTimeout(() => {//set .10s timeout between each execution of a loop
       (i < 0) ? null //if thruthy do nothing
         :(i--, document.querySelectorAll(`.animate-in`) && direction === "animate-out") ?//if falsey decrement and run conditional
           letters[i].className = letters[i].className.replace(/(?:^|\s)animate-in(?!\S)/g , ' animate-out')//if truthy swap classes
@@ -87,8 +88,8 @@ document.addEventListener("DOMContentLoaded", () =>  {
   }
 
   qwerty.addEventListener("click", (e) => {//Use event delegation listen for button, then compare with phrase letters
-    console.log(e.target);
-    if (e.target.type === "submit") {
+    
+    if (e.target.type === "submit" && win === null ) {
       let clickedBtn = e.target;
       clickedBtn.disabled = true;//Disable the button
       clickedBtn.className = checkLetter(clickedBtn.innerHTML) ?  "correct" : "wrong";
@@ -99,5 +100,21 @@ document.addEventListener("DOMContentLoaded", () =>  {
   startGame.addEventListener("click", () => {//Start game with addEventListener() on start game button
     clearBoard();
     addPhraseToDisplay();//Call AddPhraseToDisplay() function pass value of splitPhrase from getRandomPhrase()
+  });
+  document.addEventListener('keyup', (e) => {
+    const buttons = document.querySelectorAll("#qwerty button");
+    
+    if(e.key === "Enter" && !document.querySelector(".letter")){
+      clearBoard();
+      addPhraseToDisplay();//Call AddPhraseToDisplay() function pass value of splitPhrase from getRandomPhrase()
+    }
+    buttons.forEach(button => {
+      if(e.key === button.innerHTML && win === null){
+        let clickedBtn = e.target;
+        clickedBtn.disabled = true;//Disable the button
+        clickedBtn.className = checkLetter(button.innerHTML) ?  "correct" : "wrong";
+        checkWinState();//Call checkWinState function
+      }
+    });
   });
 });
